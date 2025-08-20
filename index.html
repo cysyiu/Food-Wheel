@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Wheel</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Maps JavaScript API - Replace YOUR_API_KEY with your actual key -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoUyqnOG9WxIo9jbb_-2VydygCyoyCSwk&libraries=places&loading=async"></script>
+    <!-- D3.js for the wheel -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+    <h1>Food Wheel</h1>
+    <div class="controls">
+        <label for="keyword">Cuisine Keyword:</label>
+        <input type="text" id="keyword" placeholder="Enter cuisine (e.g., Japanese restaurant, sushi)">
+        <label for="range">Search Radius (meters):</label>
+        <input type="range" id="range" min="500" max="5000" step="500" value="1000">
+        <span id="range-value">1000</span>
+        <button id="search-btn">Search</button>
+    </div>
+    <div class="content">
+        <div class="list-container">
+            <h2>Restaurants List (Top 10 Highlighted)</h2>
+            <ul id="restaurant-list"></ul>
+        </div>
+        <div class="wheel-container">
+            <h2>Spin the Wheel</h2>
+            <div class="wheel-group">
+                <div class="pointer"></div>
+                <svg id="wheel"></svg>
+                <button id="spin-btn" disabled>Spin</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+    <!-- Modal for spin result -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Spin Result</h2>
+            <p id="modal-result"></p>
+            <a id="directions-link" href="#" target="_blank">Get Directions on Google Maps</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
