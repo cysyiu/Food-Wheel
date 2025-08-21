@@ -160,13 +160,16 @@ function createWheel(isDraft = false) {
     const svg = d3.select('#wheel');
     svg.selectAll('*').remove(); // Clear previous wheel
 
-    const width = 400;
-    const height = 400;
-    const radius = Math.min(width, height) / 2;
+    // Get the wheel-group container's dimensions
+    const wheelGroup = document.querySelector('.wheel-group');
+    const containerWidth = wheelGroup.getBoundingClientRect().width;
+    const size = Math.min(containerWidth, 400); // Use container width, cap at 400px
+    const radius = size / 2;
+
     const labels = isDraft ? Array(10).fill('Option') : selectedRestaurants.map(r => r.name);
     const data = labels.map(() => 1);
 
-    svg.attr('width', width).attr('height', height);
+    svg.attr('width', size).attr('height', size);
 
     const arc = d3.svg.arc()
         .innerRadius(0)
@@ -179,7 +182,7 @@ function createWheel(isDraft = false) {
         .endAngle(2 * Math.PI);
 
     const g = svg.append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+        .attr('transform', `translate(${size / 2}, ${size / 2})`);
 
     const arcs = g.selectAll('.arc')
         .data(pie(data))
@@ -217,6 +220,10 @@ document.getElementById('spin-btn').addEventListener('click', () => {
     const modalResult = document.getElementById('modal-result');
     const directionsLink = document.getElementById('directions-link');
 
+    // Get wheel size for rotation calculations
+    const wheelGroup = document.querySelector('.wheel-group');
+    const size = Math.min(wheelGroup.getBoundingClientRect().width, 400);
+
     // Calculate random stop angle to align sector midpoint with pointer (0 degrees, top)
     const numOptions = selectedRestaurants.length;
     const degreesPerOption = 360 / numOptions;
@@ -232,7 +239,7 @@ document.getElementById('spin-btn').addEventListener('click', () => {
         .duration(4000)
         .ease('cubic-out')
         .attrTween('transform', () => {
-            return t => `translate(${400 / 2}, ${400 / 2}) rotate(${d3.interpolate(0, stopAngle)(t)})`;
+            return t => `translate(${size / 2}, ${size / 2}) rotate(${d3.interpolate(0, stopAngle)(t)})`; // Use dynamic size
         })
         .each('end', () => {
             const selectedRestaurant = selectedRestaurants[randomIndex];
